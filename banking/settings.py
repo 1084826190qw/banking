@@ -72,10 +72,19 @@ WSGI_APPLICATION = 'banking.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
+Database ={
+    'defaul':{
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': 'localhost',
+        'NAME': 'banking',
+        'USER': 'postgres',
+        'PASSWORD': 'santiago',
+        'PORT': '5432',
+    },
+
+    'local': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'banking.db.sqlite3',
     }
 }
 
