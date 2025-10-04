@@ -1,6 +1,35 @@
 from django.db import models
 
 # Create your models here.
+
+
+class Country(models.Model):
+    name = models.CharField(max_length=100)
+    abreviation = models.CharField(max_length=10, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    def __srt__(self):
+     return f"{self.name} {self.abreviation}{'active'if self.status else 'Inactive'}"   
+
+class Departament(models.Model):
+    name = models.CharField(max_length=100)
+    abreviation = models.CharField(max_length=10, blank=True, null=True)
+    id_country = models.ForeignKey("Country", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+    def __srt__(self):
+     return f"{self.name} {self.abreviation}"
+
+class City(models.Model):
+    id_department = models.ForeignKey("Departament", on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    abreviation = models.CharField(max_length=10, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    def __srt__(self):
+     return f"{self.name} {self.abreviation}"  
+
 class User(models.Model):
     firstname = models.CharField(max_length=20)
     lastname = models.CharField(max_length=20, blank=True)
@@ -13,29 +42,5 @@ class User(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(blank=True, null=True)
-    
-
-class Country(models.Model):
-    name = models.CharField(max_length=100)
-    abreviation = models.CharField(max_length=10, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
-class City(models.Model):
-    id_department = models.ForeignKey("Departament", on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    abreviation = models.CharField(max_length=10, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
-class Departament(models.Model):
-    name = models.CharField(max_length=100)
-    abreviation = models.CharField(max_length=10, blank=True, null=True)
-    id_country = models.ForeignKey("Country", on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField(blank=True, null=True)
-
-
+    def __srt__(self):
+     return f"{self.name} {self.abreviation}"

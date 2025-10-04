@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from environs import Env
+
+#start end variables
+env = Env()
+env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -70,28 +75,34 @@ TEMPLATES = [
 WSGI_APPLICATION = 'banking.wsgi.application'
 
 
+
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': 'localhost',
+        'HOST': env('DB_HOST', default='localhost'),
         'NAME': 'banking',
-        'USER': 'postgres',
-        'PASSWORD': 'santiago',
-        'PORT': '5432',
-    }
-}
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'PORT': env('DB_PORT', default='5432'),
+    },
+    'supabase': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST':env('SUPA_DB_HOST'),
+        'NAME': env('SUPA_DB_NAME'),
+        'USER': env('SUPA_DB_USER'),
+        'PASSWORD': env('SUPA_DB_PASSWORD') ,
+        'PORT':env( 'SUPA_DB_PORT'),
+    },
 
-'''
-DATABASES = {
-    'default': {
+
+    'local': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'banking.db.sqlite3',
     }
 }
-'''
 
 
 # Password validation
@@ -134,3 +145,25 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+# Archivos estáticos (para desarrollo)
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static'] # carpeta para css/js
+STATIC_ROOT = BASE_DIR / 'staticfiles' # para collectstatic en producción
